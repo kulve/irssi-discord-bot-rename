@@ -25,7 +25,7 @@ sub msg_strip_nick_from_discord_bridge {
     my ($target, $message) = split /:/, $data, 2;
 
     # The message must be from the Discord bridge bot (DBot1 in my case)
-    return unless $nick =~ /^DBot[0-9]$/;
+    return unless $nick =~ /^DBot[0-9]*$/;
 
     # Get the sender's nick from the message, i.e. " <nickname>"
     $message =~ /^[ ]*<([^>]+)>/;
