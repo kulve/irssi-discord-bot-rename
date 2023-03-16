@@ -29,13 +29,20 @@ sub msg_strip_nick_from_discord_bridge {
 
     # Get the sender's nick from the message, i.e. " <nickname>"
     $message =~ /^[ ]*<([^>]+)>/;
-    my $discord_nick = "$1";
 
-    # Remove the sender's nick from the message
-    $message =~ s/^[ ]*<\Q$discord_nick\E> //;
+    my $discord_nick = "";
 
-    # Suffix the sender's nick with "_d" to note that it's from Discord
-    $discord_nick = $discord_nick."_d";
+    if (defined($1)) {
+        $discord_nick = "$1";
+
+        # Remove the sender's nick from the message
+        $message =~ s/^[ ]*<\Q$discord_nick\E> //;
+
+        # Suffix the sender's nick with ":d" to note that it's from Discord
+        $discord_nick = $discord_nick.":d";
+    } else {
+        $discord_nick = "DBot";
+    }
 
     my $new_data = "$target:$message";
     Irssi::signal_continue($server, $new_data, $discord_nick, $host);
